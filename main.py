@@ -36,102 +36,61 @@ class car():
 
 
 
-#Create player board
-def create_board(length=int, weigth=int) -> list:
-
-    player_board = []
-
-    for player_row in range(length):
-        player_board.append([])
-        for player_col in range(width):
-            player_board[player_row].append('.')
-
-    return player_board
-
-#Print player board
-def print_board(player_board: list):
-    for player_row in player_board:
-        print(" ".join(player_row))
-    
-
-
-'''
-def player_place_ships(player_board, ships):
-      for i, j in ships.items():
-    ship_not_place = true
-    while ship_not_placed :
-      ori = input('Enter orientation, v or h: ')
-      x = int(input('Enter row: '))
-      y = int(input('Enter col: '))
-      place = x,y
-      placement = player_board[x][y]
-      if ori == 'v' and placement == '.':
-        for k in range(j):
-          player_board[x][y] = i 
-          player_board[x+k][y] = i
-        ship_not_place = false 
-      elif ori == 'h' and placement == '.':
-        player_board[x][y] = i 
-        player_board[x][y+k] = i 
-        ship_not_place = false 
-      elif ori != 'v'  or 'h' and placement != '.':
-        print('Invalid choice, please try again.')
-'''
-
 # Board:
 length = 8
 width = 8
 
 # Car-definitions
 car_dict = {
-    1: {"x": 1, "y": 3, "length": 3, "orientation": 'v'},
-    2: {"x": 4, "y": 5, "length": 2, "orientation": 'h'},
-    3: {"x": 7, "y": 3, "length": 4, "orientation": 'h'},
-    4: {"x": 0, "y": 3, "length": 4, "orientation": 'h'},
-    5: {"x": 1, "y": 4, "length": 4, "orientation": 'v'},
-    6: {"x": 5, "y": 2, "length": 3, "orientation": 'h'},
-    7: {"x": 6, "y": 2, "length": 5, "orientation": 'h'},
-    8: {"x": 3, "y": 0, "length": 5, "orientation": 'v'},
+    1: {"row": 1, "col": 3, "length": 3, "orientation": 'v'},
+    2: {"row": 4, "col": 5, "length": 2, "orientation": 'h'},
+    3: {"row": 7, "col": 3, "length": 4, "orientation": 'h'},
+    4: {"row": 0, "col": 3, "length": 4, "orientation": 'h'},
+    5: {"row": 1, "col": 4, "length": 4, "orientation": 'v'},
+    6: {"row": 5, "col": 2, "length": 3, "orientation": 'h'},
+    7: {"row": 6, "col": 2, "length": 5, "orientation": 'h'},
+    8: {"row": 3, "col": 0, "length": 5, "orientation": 'v'},
 
 }
 
 car_red = {
-    'R': {"x": 1, "y": 1, "length": 2, "orientation": 'h'},
+    'R': {"row": 1, "col": 1, "length": 2, "orientation": 'h'},
 }
 
 
 def update_board(board:list, car_dict, car_red) -> list:
 
     for car_id, car_val in car_dict.items():
-        x = car_val.get('x')
-        y = car_val.get('y')
+        row = car_val.get('row')
+        col = car_val.get('col')
 
         if car_val.get('orientation') == 'h':
-            board[x][y] = str(car_id)
+            board[row][col] = str(car_id)
             for i in range(car_val.get('length')):
-                board[car_val.get('x')][y+i] = str(car_id)
+                board[car_val.get('row')][col+i] = str(car_id)
 
         if car_val.get('orientation') == 'v':
-            board[x][y] = str(car_id)
+            board[row][col] = str(car_id)
             for k in range(car_val.get('length')):
-                board[x+k][y] = str(car_id) 
+                board[row+k][col] = str(car_id) 
             
     # Red car
     for car_id, car_val in car_red.items():
-        x = car_val.get('x')
-        y = car_val.get('y')
+        row = car_val.get('row')
+        col = car_val.get('col')
 
         if car_val.get('orientation') == 'h':
-            board[x][y] = str(car_id)
+            board[row][col] = str(car_id)
             for i in range(car_val.get('length')):
-                board[car_val.get('x')][y+i] = str(car_id)
+                board[car_val.get('row')][col+i] = str(car_id)
 
         if car_val.get('orientation') == 'v':
-            board[x][y] = str(car_id)
+            board[row][col] = str(car_id)
             for k in range(car_val.get('length')):
-                board[x+k][y] = str(car_id) 
+                board[row+k][col] = str(car_id) 
 
     return board
+
 
 
 class Board():
@@ -156,34 +115,33 @@ class Board():
         
         board_with_cars = self.init_board 
         for car_id, car_val in self.cars.items():
-            x = car_val.get('x')
-            y = car_val.get('y')
-
+            row = car_val.get('row')
+            col = car_val.get('col')
 
             if car_val.get('orientation') == 'h':
-                board_with_cars[x][y] = str(car_id)
+                board_with_cars[row][col] = str(car_id)
                 for i in range(car_val.get('length')):
-                    board_with_cars[car_val.get('x')][y+i] = str(car_id)
+                    board_with_cars[car_val.get('row')][col+i] = str(car_id)
 
             if car_val.get('orientation') == 'v':
-                board_with_cars[x][y] = str(car_id)
+                board_with_cars[row][col] = str(car_id)
                 for k in range(car_val.get('length')):
-                    board_with_cars[x+k][y] = str(car_id) 
+                    board_with_cars[row+k][col] = str(car_id) 
                 
         # Red car
         for car_id, car_val in self.red_car.items():
-            x = car_val.get('x')
-            y = car_val.get('y')
+            row = car_val.get('row')
+            col = car_val.get('col')
 
             if car_val.get('orientation') == 'h':
-                board_with_cars[x][y] = str(car_id)
+                board_with_cars[row][col] = str(car_id)
                 for i in range(car_val.get('length')):
-                    board_with_cars[car_val.get('x')][y+i] = str(car_id)
+                    board_with_cars[car_val.get('row')][col+i] = str(car_id)
 
             if car_val.get('orientation') == 'v':
-                board_with_cars[x][y] = str(car_id)
+                board_with_cars[row][col] = str(car_id)
                 for k in range(car_val.get('length')):
-                    board_with_cars[x+k][y] = str(car_id) 
+                    board_with_cars[row+k][col] = str(car_id) 
 
         return board_with_cars
         
@@ -194,10 +152,22 @@ class Board():
             print(" ".join(row))
 
 
-
 # Red-Car definiton
 instance_board = Board(8,8, car_dict, car_red) 
-test = instance_board.create_board()
 
 instance_board.output()
+
+#print(instance_board.board)
+for car_id, car_val in car_dict.items():
+    if car_id ==6:
+            print(car_val)
+            car_val.get('row')
+            car_val.get('col')
+            car_val.get('length')
+            car_val.get('orientation')
+
+            car_test = Car(car_val.get('row'), car_val.get('col'), car_val.get('length'), car_val.get('orientation'), instance_board.board )
+            car_test.move(direction='left')
+            print(car_val)
+            print('########################')
 
