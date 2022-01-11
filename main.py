@@ -170,38 +170,38 @@ class Board():
             print(" ".join(row))
 
     def extract_possible_mvoes(self):
-        pos_moves = {}
-
+        possible_moves = []
+        # extract moves left
         for i in range(len(self.board)):
             
             array_board = self.board[i]
             amount_moves = 0
 
-            for count, value in enumerate(array_board):
+            for count, value in enumerate(array_board): # value is car id on the board
                 if (value is not '.') and (amount_moves > 0) and (array_board[count+1] == value) and (array_board[count-1] == '.'):
-                    print("ID ", value, "left", amount_moves)
+                    
+                    possible_moves.append([value, "left", amount_moves])
                     amount_moves = 0
                 if value is '.': 
                     amount_moves = amount_moves+1
                 if (value is not '.') and (array_board[count-1] != value) and (array_board[count+1] != value):
                     amount_moves = 0
-
+        # extract moves rigth
         for i in range(len(self.board)):
 
             amount_moves = 0
             array_board = self.board[i]
-
             reverse_board = array_board[::-1]
 
             for count, value in enumerate(reverse_board[:-1]):
                 if (value is not '.') and (amount_moves > 0) and (reverse_board[count+1] == value) and (reverse_board[count-1] == '.'):
-                    print("ID ",value, "right", amount_moves)
+                    possible_moves.append([value, "right", amount_moves])
                     amount_moves = 0
                 if value is '.': 
                     amount_moves = amount_moves+1
                 if (value is not '.') and (reverse_board[count-1] != value) and(reverse_board[count+1] != value):
                     amount_moves = 0
-
+        return possible_moves
 
 
 
@@ -247,9 +247,10 @@ class Car():
 instance_board = Board(8,8, car_dict, car_red) 
 
 instance_board.output()
-pos_moves = {} # a dict for pos moves with key-value pair: car-id - move
+possible_moves = [] # a dict for pos moves with key-value pair: car-id - move
 
-instance_board.extract_possible_mvoes()
+possible_moves = instance_board.extract_possible_mvoes()
+print(possible_moves)
 exit()
 #print(instance_board.board)
 
