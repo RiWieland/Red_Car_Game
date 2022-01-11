@@ -6,22 +6,41 @@
 
 
 
-class car():
-    '''
-    Attributes:
-    - length
-    - direction
-    - start_coordinates
-    - actual coordinates
-    -- need two coordinates? 
+class Car():
+    def __init__(self, row, col, len, orientation, board):
+        self.row = row
+        self.col = col
+        self.len = len
+        self.orientation = orientation
+        self.board = board
 
-    
-    Method:
-    move -> dependent on direction, start_coordinates
-    - update actual coordinates
+    def move(self, direction):
+        board = self.board
+        if self.orientation == 'v':
+            try:
+                if board[(self.row)][self.col + self.len] == '.':
+                    print("pos")
+            except:
+                print("not possible to move")
 
-    '''
-
+        if self.orientation == 'h':
+            if direction == 'right':
+                try:
+                    if board[(self.row)][self.col + self.len] == '.':
+                        self._col += 1
+                    else:
+                        print("not possilbe to move: other object")
+                except:
+                    print("not possible to move")
+            if direction == 'left':
+                try:
+                    if board[(self.row)][self.col-1] == '.':
+                        print("calleee")
+                        self._col =1
+                    else:
+                        print("not possible to move: other object")
+                except:
+                    print("not possible to move")
 
 
 # Add:
