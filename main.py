@@ -6,27 +6,6 @@ import random
 # how an instance prints uses its onwn function (see def execute_stop())
 
 
-
-
-
-class car():
-    '''
-    Attributes:
-    - length
-    - direction
-    - start_coordinates
-    - actual coordinates
-    -- need two coordinates? 
-
-    
-    Method:
-    move -> dependent on direction, start_coordinates
-    - update actual coordinates
-
-    '''
-
-
-
 # Add:
 # Board-logic:
 # - Cars not over each other
@@ -310,6 +289,32 @@ def select_random_move(pos_moves):
     move[2] =random.choice(list_moves)
     return move
 
+def update_car_dict(car_dict, car_red, move):
+    car_id = move[0]
+    if car_id != "R":
+        car_id = int(car_id)
+
+        if move[1] == 'right':
+            car_dict[car_id]['col'] = (car_dict[car_id].get('col') + int(move[2]))
+        if move[1] == 'left':
+            car_dict[car_id]['col'] = (car_dict[car_id].get('col') - int(move[2]))
+        if move[1] == 'up':
+            car_dict[car_id]['row'] = (car_dict[car_id].get('row') + int(move[2]))
+        if move[1] == 'down':
+            car_dict[car_id]['row'] = (car_dict[car_id].get('row') - int(move[2]))
+
+    if car_id == 'R':
+        if move[1] == 'right':
+            car_red[car_id]['col'] = (car_red[car_id].get('col') + int(move[2]))
+        if move[1] == 'left':
+            car_red[car_id]['col'] = (car_red[car_id].get('col') - int(move[2]))
+        if move[1] == 'up':
+            car_red[car_id]['row'] = (car_red[car_id].get('row') + int(move[2]))
+        if move[1] == 'down':
+            car_red[car_id]['row'] = (car_red[car_id].get('row') - int(move[2]))
+
+    return car_dict, car_red
+
 
 # Red-Car definiton
 instance_board = Board(8,8, car_dict, car_red) 
@@ -323,40 +328,7 @@ pos_moves = pos_moves_hor + pos_moves_ver
 move = select_random_move(pos_moves) 
 # -> update car dict
 
-def update_car_dict(car_dict, car_red, move):
-    car_id = move[0]
-    if car_id != "R":
-        car_id = int(car_id)
 
-        if move[1] == 'right':
-            car_dict[car_id]['col'] = (car_dict[car_id].get('col') + int(move[2]))
-
-        if move[1] == 'left':
-            car_dict[car_id]['col'] = (car_dict[car_id].get('col') - int(move[2]))
-
-        if move[1] == 'up':
-            car_dict[car_id]['row'] = (car_dict[car_id].get('row') + int(move[2]))
- 
-        if move[1] == 'down':
-            car_dict[car_id]['row'] = (car_dict[car_id].get('row') - int(move[2]))
-
-    if car_id == 'R':
-        if move[1] == 'right':
-            car_red[car_id]['col'] = (car_red[car_id].get('col') + int(move[2]))
-
-        if move[1] == 'left':
-            car_red[car_id]['col'] = (car_red[car_id].get('col') - int(move[2]))
-
-        if move[1] == 'up':
-            car_red[car_id]['row'] = (car_red[car_id].get('row') + int(move[2]))
- 
-
-        if move[1] == 'down':
-            car_red[car_id]['row'] = (car_red[car_id].get('row') - int(move[2]))
-
-    return car_dict, car_red
-
-    #print(car_dict[car_id])
     
 updated_car_dict = {}
 updated_car_red = {}
@@ -365,40 +337,3 @@ updated_car_dict, updated_car_red = update_car_dict(car_dict, car_red,move)
 
 exit()
 
-# -> create new dict
-#-> restart loop
-
-if instance_board.execute_stop():
-    instance_board.output()
-exit()
-#print(instance_board.board)
-
-for car_id, _ in car_dict.items():
-    if car_id ==car_id:
-        #print(car_dict[car_id].get('col'))
-
-        # extract possible moves:
-
-
-        car = Car(car_id, car_dict, instance_board.board)
-        car.move(direction='left')
-
-
-        #exit()
-'''            print(car_val)
-            car_val.get('row')
-            car_val.get('col')
-            car_val.get('length')
-            car_val.get('orientation')
-
-            car_test = Car(car_val.get('row'), car_val.get('col'), car_val.get('length'), car_val.get('orientation'), instance_board.board )
-            car_test.move(direction='left')
-
-
-            print(car_val)
-            print('########################')
-'''
-
-# pseudo code:
-# - Cars move method -> dep: Board
-# - 
