@@ -1,6 +1,6 @@
 
 #import numpy as np
-
+import random
 
 # to do:
 # how an instance prints uses its onwn function (see def execute_stop())
@@ -61,7 +61,7 @@ def print_board(placoler_board: list):
 
 # Board:
 length = 8
-width = 8
+width = 9
 
 # Car-definitions
 car_dict = {
@@ -210,7 +210,7 @@ class Board():
             print(" ".join(row))
 
     def possible_moves_horizontal(self):
-        possible_moves = []
+        possible_moves_hor = []
         # extract moves left
         for i in range(len(self.board)):
             
@@ -220,7 +220,7 @@ class Board():
             for count, value in enumerate(array_board): # value is car id on the board
                 if (value is not '.') and (num_pos_moves > 0) and (array_board[count+1] == value) and (array_board[count-1] == '.'):
                     
-                    possible_moves.append([value, "left", num_pos_moves])
+                    possible_moves_hor.append([value, "left", num_pos_moves])
                     num_pos_moves = 0
                 if value is '.': 
                     num_pos_moves = num_pos_moves+1
@@ -235,13 +235,13 @@ class Board():
 
             for count, value in enumerate(reverse_hor_board[:-1]):
                 if (value is not '.') and (num_pos_moves > 0) and (reverse_hor_board[count+1] == value) and (reverse_hor_board[count-1] == '.'):
-                    possible_moves.append([value, "right", num_pos_moves])
+                    possible_moves_hor.append([value, "right", num_pos_moves])
                     num_pos_moves = 0
                 if value is '.': 
                     num_pos_moves = num_pos_moves+1
                 if (value is not '.') and (reverse_hor_board[count-1] != value) and(reverse_hor_board[count+1] != value):
                     num_pos_moves = 0
-        return possible_moves
+        return possible_moves_hor
     
     def execute_stop(self):
         '''
@@ -258,19 +258,68 @@ class Board():
             print('Final Board:')
             return True
         if reverse_hor_board[0] != 'R':
-            return false
-        
-        
+            return False
+
+    def possible_moves_vertical(self):
+        possible_moves_ver = []
+        # extract moves left
+        num_pos_moves = 0
+    
+        # create list on verticals
+        for k in range(len(self.board[0])):
+            array_board = []
+
+            for i in range(len(self.board)):
+                array_board.append(self.board[i][k])
+
+            for count, value in enumerate(array_board[:-1]): # [:-1] last element irrelevant for move -> list out of range
+
+                if (value is not '.') and (num_pos_moves > 0) and (array_board[count+1] == value) and (array_board[count-1] == '.'):
+                    possible_moves_ver.append([value, "up", num_pos_moves])
+                    num_pos_moves = 0
+                if value is '.': 
+                    num_pos_moves = num_pos_moves+1
+                if (value is not '.') and (array_board[count-1] != value) and (array_board[count+1] != value):
+                    num_pos_moves = 0
+
+        for k in range(len(self.board[0])):
+            array_board = []
+            num_pos_moves = 0
+            # moves down
+
+            for i in range(len(self.board)):
+                array_board.append(self.board[i][k])
+            reverse_ver_board = array_board[::-1]
+            for count, value in enumerate(reverse_ver_board[:-1]):
+                if (value is not '.') and (num_pos_moves > 0) and (reverse_ver_board[count+1] == value) and (reverse_ver_board[count-1] == '.'):
+                    possible_moves_ver.append([value, "down", num_pos_moves])
+                    num_pos_moves = 0
+                if value is '.': 
+                    num_pos_moves = num_pos_moves+1
+                if (value is not '.') and (reverse_ver_board[count-1] != value) and(reverse_ver_board[count+1] != value):
+                    num_pos_moves = 0
+        return possible_moves_ver
+
+
+
 
 
 # Red-Car definiton
 instance_board = Board(8,8, car_dict, car_red) 
 
 instance_board.output()
-possible_moves = [] # a dict for pos moves with key-value pair: car-id - move
+pos_moves_hor = instance_board.possible_moves_horizontal()
+pos_moves_ver = instance_board.possible_moves_vertical()
+pos_moves = pos_moves_hor + pos_moves_ver
 
-#possible_moves = instance_board.possible_moves_horizontal()
-#print(possible_moves)
+# select move:
+def select_move_random(pos_moves):
+    pos_moves = pos_moves_hor + pos_moves_ver
+    print(pos_moves)
+    return pos_moves
+
+ = select_move_random(pos_moves_ver, pos_moves_hor)
+
 if instance_board.execute_stop():
     instance_board.output()
 exit()
