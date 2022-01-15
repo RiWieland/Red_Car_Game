@@ -2,6 +2,9 @@
 #import numpy as np
 
 
+# to do:
+# how an instance prints uses its onwn function (see def execute_stop())
+
 
 
 
@@ -111,6 +114,43 @@ def update_board(board:list, car_dict, car_red) -> list:
 
     return board
 
+class Car():
+    def __init__(self, car_id, car_dict ,board):
+        self.car_id = car_id
+        self.row = car_dict[car_id].get('row')
+        self.col = car_dict[car_id].get('col')
+        self.len = car_dict[car_id].get('length')
+        self.orientation = car_dict[car_id].get('orientation')
+        self.board = board
+
+    def move(self, direction):
+        board = self.board
+        if self.orientation == 'v':
+            try:
+                if board[(self.row)][self.col + self.len] == '.':
+                    print("pos")
+            except:
+                print("not possible to move")
+
+        if self.orientation == 'h':
+            if direction == 'right':
+                try:
+                    if board[(self.row)][self.col + self.len] == '.':
+                        self._col += 1
+                    else:
+                        print("not possilbe to move: other object")
+                except:
+                    print("not possible to move")
+            if direction == 'left':
+                try:
+                    if board[(self.row)][self.col-1] == '.':
+                        print()
+                        self._col =1
+                    else:
+                        print("not possible to move: other object")
+                except:
+                    print("not possible to move")
+
 
 
 class Board():
@@ -169,78 +209,58 @@ class Board():
         for row in self.board:
             print(" ".join(row))
 
-    def extract_possible_mvoes(self):
+    def possible_moves_horizontal(self):
         possible_moves = []
         # extract moves left
         for i in range(len(self.board)):
             
             array_board = self.board[i]
-            amount_moves = 0
+            num_pos_moves = 0
 
             for count, value in enumerate(array_board): # value is car id on the board
-                if (value is not '.') and (amount_moves > 0) and (array_board[count+1] == value) and (array_board[count-1] == '.'):
+                if (value is not '.') and (num_pos_moves > 0) and (array_board[count+1] == value) and (array_board[count-1] == '.'):
                     
-                    possible_moves.append([value, "left", amount_moves])
-                    amount_moves = 0
+                    possible_moves.append([value, "left", num_pos_moves])
+                    num_pos_moves = 0
                 if value is '.': 
-                    amount_moves = amount_moves+1
+                    num_pos_moves = num_pos_moves+1
                 if (value is not '.') and (array_board[count-1] != value) and (array_board[count+1] != value):
-                    amount_moves = 0
+                    num_pos_moves = 0
         # extract moves rigth
         for i in range(len(self.board)):
 
-            amount_moves = 0
+            num_pos_moves = 0
             array_board = self.board[i]
-            reverse_board = array_board[::-1]
+            reverse_hor_board = array_board[::-1]
 
-            for count, value in enumerate(reverse_board[:-1]):
-                if (value is not '.') and (amount_moves > 0) and (reverse_board[count+1] == value) and (reverse_board[count-1] == '.'):
-                    possible_moves.append([value, "right", amount_moves])
-                    amount_moves = 0
+            for count, value in enumerate(reverse_hor_board[:-1]):
+                if (value is not '.') and (num_pos_moves > 0) and (reverse_hor_board[count+1] == value) and (reverse_hor_board[count-1] == '.'):
+                    possible_moves.append([value, "right", num_pos_moves])
+                    num_pos_moves = 0
                 if value is '.': 
-                    amount_moves = amount_moves+1
-                if (value is not '.') and (reverse_board[count-1] != value) and(reverse_board[count+1] != value):
-                    amount_moves = 0
+                    num_pos_moves = num_pos_moves+1
+                if (value is not '.') and (reverse_hor_board[count-1] != value) and(reverse_hor_board[count+1] != value):
+                    num_pos_moves = 0
         return possible_moves
+    
+    def execute_stop(self):
+        '''
+        - stop if the red car is on the right side
+        - red car is always on the 2nd line from above (game defintion)
+        '''
+        #for i in range(len(self.board)):
+    
+        array_board = self.board[1]
+        reverse_hor_board = array_board[::-1]
 
-
-
-class Car():
-    def __init__(self, car_id, car_dict ,board):
-        self.car_id = car_id
-        self.row = car_dict[car_id].get('row')
-        self.col = car_dict[car_id].get('col')
-        self.len = car_dict[car_id].get('length')
-        self.orientation = car_dict[car_id].get('orientation')
-        self.board = board
-
-    def move(self, direction):
-        board = self.board
-        if self.orientation == 'v':
-            try:
-                if board[(self.row)][self.col + self.len] == '.':
-                    print("pos")
-            except:
-                print("not possible to move")
-
-        if self.orientation == 'h':
-            if direction == 'right':
-                try:
-                    if board[(self.row)][self.col + self.len] == '.':
-                        self._col += 1
-                    else:
-                        print("not possilbe to move: other object")
-                except:
-                    print("not possible to move")
-            if direction == 'left':
-                try:
-                    if board[(self.row)][self.col-1] == '.':
-                        print()
-                        self._col =1
-                    else:
-                        print("not possible to move: other object")
-                except:
-                    print("not possible to move")
+        if reverse_hor_board[0] == 'R':
+            print('Game solved!')
+            print('Final Board:')
+            return True
+        if reverse_hor_board[0] != 'R':
+            return false
+        
+        
 
 
 # Red-Car definiton
@@ -249,8 +269,10 @@ instance_board = Board(8,8, car_dict, car_red)
 instance_board.output()
 possible_moves = [] # a dict for pos moves with key-value pair: car-id - move
 
-possible_moves = instance_board.extract_possible_mvoes()
-print(possible_moves)
+#possible_moves = instance_board.possible_moves_horizontal()
+#print(possible_moves)
+if instance_board.execute_stop():
+    instance_board.output()
 exit()
 #print(instance_board.board)
 
@@ -262,9 +284,6 @@ for car_id, _ in car_dict.items():
 
 
         car = Car(car_id, car_dict, instance_board.board)
-        
-
- 
         car.move(direction='left')
 
 
