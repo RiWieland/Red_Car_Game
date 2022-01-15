@@ -301,7 +301,14 @@ class Board():
         return possible_moves_ver
 
 
-
+def select_random_move(pos_moves):
+    move = random.choice(pos_moves)
+    max_move = move[2]
+    list_moves = []
+    for i in range(max_move):
+        list_moves.append(i+1)
+    move[2] =random.choice(list_moves)
+    return move
 
 
 # Red-Car definiton
@@ -311,14 +318,55 @@ instance_board.output()
 pos_moves_hor = instance_board.possible_moves_horizontal()
 pos_moves_ver = instance_board.possible_moves_vertical()
 pos_moves = pos_moves_hor + pos_moves_ver
+# function for random move needs to be extended (only max values are there right now)
 
-# select move:
-def select_move_random(pos_moves):
-    pos_moves = pos_moves_hor + pos_moves_ver
-    print(pos_moves)
-    return pos_moves
+move = select_random_move(pos_moves) 
+# -> update car dict
 
- = select_move_random(pos_moves_ver, pos_moves_hor)
+def update_car_dict(car_dict, car_red, move):
+    car_id = move[0]
+    if car_id != "R":
+        car_id = int(car_id)
+
+        if move[1] == 'right':
+            car_dict[car_id]['col'] = (car_dict[car_id].get('col') + int(move[2]))
+
+        if move[1] == 'left':
+            car_dict[car_id]['col'] = (car_dict[car_id].get('col') - int(move[2]))
+
+        if move[1] == 'up':
+            car_dict[car_id]['row'] = (car_dict[car_id].get('row') + int(move[2]))
+ 
+        if move[1] == 'down':
+            car_dict[car_id]['row'] = (car_dict[car_id].get('row') - int(move[2]))
+
+    if car_id == 'R':
+        if move[1] == 'right':
+            car_red[car_id]['col'] = (car_red[car_id].get('col') + int(move[2]))
+
+        if move[1] == 'left':
+            car_red[car_id]['col'] = (car_red[car_id].get('col') - int(move[2]))
+
+        if move[1] == 'up':
+            car_red[car_id]['row'] = (car_red[car_id].get('row') + int(move[2]))
+ 
+
+        if move[1] == 'down':
+            car_red[car_id]['row'] = (car_red[car_id].get('row') - int(move[2]))
+
+    return car_dict, car_red
+
+    #print(car_dict[car_id])
+    
+updated_car_dict = {}
+updated_car_red = {}
+
+updated_car_dict, updated_car_red = update_car_dict(car_dict, car_red,move)
+
+exit()
+
+# -> create new dict
+#-> restart loop
 
 if instance_board.execute_stop():
     instance_board.output()
