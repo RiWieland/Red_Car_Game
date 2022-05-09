@@ -16,8 +16,6 @@ import random
 # - place cars on it
 # - calculate evercol posible state from the current one
 
-
-
 #Create placoler board
 def create_board(length=int, weigth=int) -> list:
 
@@ -35,9 +33,6 @@ def print_board(placoler_board: list):
     for placoler_row in placoler_board:
         print(" ".join(placoler_row))
     
-
-
-
 # Board:
 length = 8
 width = 9
@@ -52,13 +47,11 @@ car_dict = {
     5: {"row": 5, "col": 2, "length": 3, "orientation": 'h'},
     6: {"row": 6, "col": 2, "length": 5, "orientation": 'h'},
     7: {"row": 3, "col": 0, "length": 5, "orientation": 'v'},
-
 }
 
 car_red = {
     'R': {"row": 1, "col": 6, "length": 2, "orientation": 'h'},
 }
-
 
 def update_board(board:list, car_dict, car_red) -> list:
 
@@ -130,8 +123,6 @@ class Car():
                 except:
                     print("not possible to move")
 
-
-
 class Board():
     def __init__(self, length, width, cars_dict, red_car):
         self.length = length
@@ -181,7 +172,6 @@ class Board():
                 board_with_cars[row][col] = str(car_id)
                 for k in range(car_val.get('length')):
                     board_with_cars[row+k][col] = str(car_id) 
-
         return board_with_cars
 
     def output(self):
@@ -207,7 +197,6 @@ class Board():
                     num_pos_moves = 0
         # extract moves rigth
         for i in range(len(self.board)):
-
             num_pos_moves = 0
             array_board = self.board[i]
             reverse_hor_board = array_board[::-1]
